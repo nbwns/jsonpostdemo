@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+    <fieldset>
+        <legend>Question</legend>
+
+        <div class="well">
+            <div class="editor-label">
+                Question 1 <input id="Title1" name="Title" />
+            </div>
+            <div >
+                Réponse 1 <input id="AnswerText1_1" name="AnswerText" />
+                Réponse 2 <input id="AnswerText1_2" name="AnswerText" />
+            </div>
+        </div>
+
+         <div class="well">
+            <div class="editor-label">
+                Question 2 <input id="Title2" name="Title" />
+            </div>
+            <div >
+                Réponse 1 <input id="AnswerText2_1" name="AnswerText" />
+                Réponse 2 <input id="AnswerText2_2" name="AnswerText" />
+            </div>
+        </div>
+
+        <p>
+            <button>Create</button>
+        </p>
+    </fieldset>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("button").click(function () {
+            var arr = [];
+            $(".well").each(function () {
+                var question = {};
+                question.title = $(this).find("input[name='Title']").val();
+                question.questionAnswers = [];
+                $(this).find("input[name='AnswerText']").each(function () {
+                    var questionAnswer = {};
+                    questionAnswer.answerText = $(this).val();
+                    question.questionAnswers.push(questionAnswer);
+                });
+                arr.push(question);
+            });
+            console.log(arr);
+            $.post("/api/question", { '': JSON.stringify(arr) }, function (data) {
+                console.log(data);
+            });
+            //http://encosia.com/using-jquery-to-post-frombody-parameters-to-web-api/
+            return false;
+        });
+    </script>
+}
